@@ -15,7 +15,7 @@ class UrlService {
     let shortUrl = ''
     const characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    const length = 6
+    const length = 7
 
     do {
       shortUrl = ''
