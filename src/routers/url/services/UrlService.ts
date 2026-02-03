@@ -56,6 +56,7 @@ class UrlService {
     const urls = await prisma.url.findMany()
     return urls
   }
+
   async getUrlByShort(short: string): Promise<string | null> {
     const urlRecord = await prisma.url.findFirst({
       where: { short: short }
