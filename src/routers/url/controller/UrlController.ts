@@ -17,9 +17,17 @@ class UrlController {
     return { shortUrl }
   }
 
-  async getAllUrls(): Promise<Urls[]> {
+  async getAllUrls(): Promise<{ urls: Urls[] }> {
     const urls = await this.urlService.getAllUrls()
-    return urls
+    return { urls }
+  }
+
+  async getUrlByShort(short: string): Promise<string> {
+    const url = await this.urlService.getUrlByShort(short)
+    if (url) {
+      return url
+    }
+    return ''
   }
 }
 

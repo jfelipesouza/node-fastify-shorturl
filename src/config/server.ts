@@ -19,7 +19,7 @@ server.register(ScalarApiReference, {
 })
 
 server.register(router, {
-  prefix: '/v1/'
+  prefix: '/'
 })
 
 export { server }

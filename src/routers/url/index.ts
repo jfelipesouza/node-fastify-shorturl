@@ -42,16 +42,26 @@ export const urlRoutes: FastifyPluginAsync = async app => {
         tags: ['URL'],
         response: {
           200: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                id: { type: 'string' },
-                original: { type: 'string' },
-                short: { type: 'string' },
-                isTemp: { type: 'boolean' },
-                expireAt: { type: ['string', 'null'], format: 'date-time' },
-                createdAt: { type: 'string', format: 'date-time' }
+            type: 'object',
+            properties: {
+              urls: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    original: { type: 'string' },
+                    short: { type: 'string' },
+                    isTemp: { type: 'boolean' },
+                    visitCount: { type: 'number' },
+                    expireAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      nullable: true
+                    },
+                    createdAt: { type: 'string', format: 'date-time' }
+                  }
+                }
               }
             }
           }
@@ -61,6 +71,36 @@ export const urlRoutes: FastifyPluginAsync = async app => {
     async (request, reply) => {
       const urls = await controller.getAllUrls()
       return reply.status(200).send(urls)
+    }
+  )
+
+  // Get Original URL by Short URL
+  app.get(
+    '/:short',
+    {
+      schema: {
+        tags: ['URL'],
+        params: {
+          type: 'object',
+          properties: {
+            short: { type: 'string' }
+          },
+          required: ['short']
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              originalUrl: { type: 'string' }
+            }
+          }
+        }
+      }
+    },
+    async (request, reply) => {
+      const params = request.params as { short: string }
+      const originalUrl = await controller.getUrlByShort(params.short)
+      return reply.status(200).send({ originalUrl })
     }
   )
 }
