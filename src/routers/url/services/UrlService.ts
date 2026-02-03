@@ -29,8 +29,8 @@ class UrlService {
 
     if (temp) {
       const expireAt = new Date()
-      // expireAt.setHours(expireAt.getHours() + 12) // Expira em 12 horas
-      expireAt.setMinutes(expireAt.getMinutes() + 5) // Expira em 5 minutos
+      expireAt.setHours(expireAt.getHours() + 24) // Expira em 24 horas
+
       await prisma.url.create({
         data: {
           original: url,
