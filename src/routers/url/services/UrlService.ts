@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { Urls } from '../dto/Urls'
 
 class UrlService {
   domain = process.env.DOMAIN_URL || 'http://localhost:3001'
@@ -28,11 +29,13 @@ class UrlService {
 
     if (temp) {
       const expireAt = new Date()
-      expireAt.setHours(expireAt.getHours() + 1) // Expira em 1 hora
+      // expireAt.setHours(expireAt.getHours() + 12) // Expira em 12 horas
+      expireAt.setMinutes(expireAt.getMinutes() + 5) // Expira em 5 minutos
       await prisma.url.create({
         data: {
           original: url,
           short: shortUrl,
+          isTemp: temp,
           expireAt: expireAt
         }
       })
@@ -40,12 +43,18 @@ class UrlService {
       await prisma.url.create({
         data: {
           original: url,
-          short: shortUrl
+          short: shortUrl,
+          isTemp: temp
         }
       })
     }
 
     return `${this.domain}/${shortUrl}`
+  }
+
+  async getAllUrls(): Promise<Urls[]> {
+    const urls = await prisma.url.findMany()
+    return urls
   }
 }
 

@@ -1,17 +1,25 @@
+import { CreateShortUrlRequest } from '../dto/createShortUrlRequest'
+import { CreateShortUrlResponse } from '../dto/createShortUrlResponse'
+import { Urls } from '../dto/Urls'
 import { UrlService } from '../services/UrlService'
-import { ShortUrlRequest } from '../dto/shorturl-request'
-import { ShortUrlResponse } from '../dto/shorturl-response'
 
 class UrlController {
   urlService = new UrlService()
 
   constructor() {}
 
-  async createTempShortUrl(data: ShortUrlRequest): Promise<ShortUrlResponse> {
+  async createTempShortUrl(
+    data: CreateShortUrlRequest
+  ): Promise<CreateShortUrlResponse> {
     const { url } = data
 
     const shortUrl = await this.urlService.createShortUrl(url, true)
     return { shortUrl }
+  }
+
+  async getAllUrls(): Promise<Urls[]> {
+    const urls = await this.urlService.getAllUrls()
+    return urls
   }
 }
 
