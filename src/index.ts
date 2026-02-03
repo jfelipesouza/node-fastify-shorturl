@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { server } from './config/server.js'
 
 const port = process.env.PORT ? Number(process.env.PORT) : 3000

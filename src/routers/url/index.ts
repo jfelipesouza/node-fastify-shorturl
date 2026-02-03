@@ -1,4 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify'
+import { UrlController } from './controller/UrlController'
+
+const controller = new UrlController()
 
 export const urlRoutes: FastifyPluginAsync = async app => {
   app.post(
@@ -24,8 +27,10 @@ export const urlRoutes: FastifyPluginAsync = async app => {
         security: [{ bearerAuth: [] }]
       }
     },
-    async () => {
-      return { shortUrl: 'https://x.y/abc' }
+    async (request, reply) => {
+      const data = request.body as { url: string }
+      const result = await controller.createTempShortUrl(data)
+      return reply.status(200).send(result)
     }
   )
 }
