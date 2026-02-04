@@ -23,6 +23,7 @@ model Url {
   expireAt   DateTime?
   createdAt  DateTime  @default(now())
 
+  @@index([short])
   @@map("urls")
 }
 
