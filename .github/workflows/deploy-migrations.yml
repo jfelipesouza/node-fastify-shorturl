@@ -1,0 +1,38 @@
+name: Deploy Database Migrations
+
+on:
+  push:
+    branches:
+      - main
+    # O pipeline só vai rodar se houver arquivos alterados nestes caminhos:
+    paths:
+      - 'prisma/migrations/**'
+      - 'prisma/schema.prisma'
+
+jobs:
+  deploy-migrations:
+    name: Run Prisma Migrate Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # Mesma versão do seu Dockerfile
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      # Gera o cliente (necessário para o prisma ler o schema corretamente)
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      # Aplica a migração no banco de produção
+      - name: Run Migrations
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

@@ -11,6 +11,8 @@ RUN yarn install --frozen-lockfile
 # Copia o restante do código fonte
 COPY . .
 
+RUN npx prisma generate
+
 # Build da aplicação TypeScript para a pasta dist/
 RUN yarn build
 
@@ -31,6 +33,8 @@ COPY --from=builder /app/dist ./dist
 
 # (Opcional) Copia diretório prisma caso você use migrações em runtime
 COPY prisma ./prisma
+
+COPY --from=builder /app/generated ./generated
 
 # Porta padrão usada no src/index.ts (pode ser sobrescrita por variável de ambiente PORT)
 EXPOSE 3000
