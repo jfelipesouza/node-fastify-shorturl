@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dist/index.cjs",
     "dev": "tsx watch src/index.ts",
-    "build": "tsup src"
+    "build": "tsup src && npx prisma generate",
+    "db:deploy": "npx prisma migrate deploy"
   },
   "dependencies": {
     "@fastify/cors": "^11.2.0",
