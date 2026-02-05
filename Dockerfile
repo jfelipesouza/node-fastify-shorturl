@@ -34,7 +34,7 @@ COPY --from=builder /app/dist ./dist
 # (Opcional) Copia diretório prisma caso você use migrações em runtime
 COPY prisma ./prisma
 
-COPY --from=builder /app/generated ./generated
+COPY --from=builder /app/src/generated ./src/generated
 
 # Porta padrão usada no src/index.ts (pode ser sobrescrita por variável de ambiente PORT)
 EXPOSE 3000
